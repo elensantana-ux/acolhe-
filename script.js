@@ -14,6 +14,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   initHeaderScroll();
   initMobileDrawer();
+  initHeroSlider();
   initImpactCounters();
   initProjectFilters();
   initModalsSystem();
@@ -24,6 +25,149 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollSpy();
   updateCurrentYear();
 });
+
+/* --------------------------------------------------------------------------
+   0. Hero Slider / Carrossel de Imagens
+   -------------------------------------------------------------------------- */
+function initHeroSlider() {
+  const slider    = document.getElementById('heroSlider');
+  const slides    = slider ? slider.querySelectorAll('.hero-slide') : [];
+  const dots      = document.querySelectorAll('.slider-dot[data-slide]');
+  const prevBtn   = document.getElementById('sliderPrev');
+  const nextBtn   = document.getElementById('sliderNext');
+
+  if (!slider || slides.length < 2) return;
+
+  let currentIndex = 0;
+  let autoplayTimer = null;
+  const AUTOPLAY_DELAY = 4500; // ms entre slides
+
+  /* Vai para um slide específico */
+  const goToSlide = (newIndex) => {
+    if (newIndex === currentIndex) return;
+
+    // Marca o slide atual como "saindo"
+    slides[currentIndex].classList.add('leaving');
+    slides[currentIndex].classList.remove('active');
+    slides[currentIndex].setAttribute('aria-hidden', 'true');
+
+    // Remove a classe "leaving" depois da transição
+    const leavingSlide = slides[currentIndex];
+    setTimeout(() => leavingSlide.classList.remove('leaving'), 780);
+
+    // Ativa o novo slide
+    currentIndex = (newIndex + slides.length) % slides.length;
+    slides[currentIndex].classList.add('active');
+    slides[currentIndex].setAttribute('aria-hidden', 'false');
+
+    // Atualiza os dots
+    dots.forEach((dot, i) => {
+      const isActive = i === currentIndex;
+      dot.classList.toggle('active', isActive);
+      dot.setAttribute('aria-selected', String(isActive));
+
+      // Reinicia a animação da barra de progresso no dot ativo
+      if (isActive) {
+        dot.classList.remove('active');
+        void dot.offsetWidth; // Força reflow para reiniciar a animação CSS
+        dot.classList.add('active');
+      }
+    });
+  };
+
+  /* Avança um slide */
+  const nextSlide = () => goToSlide(currentIndex + 1);
+
+  /* Volta um slide */
+  const prevSlide = () => goToSlide(currentIndex - 1);
+
+  /* Inicia o autoplay */
+  const startAutoplay = () => {
+    stopAutoplay();
+    autoplayTimer = setInterval(nextSlide, AUTOPLAY_DELAY);
+  };
+
+  /* Para o autoplay */
+  const stopAutoplay = () => {
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+  };
+
+  /* Botão Próximo */
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      nextSlide();
+      stopAutoplay();
+      startAutoplay(); // Reinicia contagem após interação manual
+    });
+  }
+
+  /* Botão Anterior */
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      prevSlide();
+      stopAutoplay();
+      startAutoplay();
+    });
+  }
+
+  /* Dots de navegação */
+  dots.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      const targetIndex = parseInt(dot.getAttribute('data-slide'), 10);
+      goToSlide(targetIndex);
+      stopAutoplay();
+      startAutoplay();
+    });
+  });
+
+  /* Suporte a swipe touch (mobile) */
+  let touchStartX = 0;
+  let touchEndX   = 0;
+
+  slider.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  slider.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+      stopAutoplay();
+      startAutoplay();
+    }
+  }, { passive: true });
+
+  /* Pausa o autoplay quando o mouse está sobre o carrossel */
+  slider.addEventListener('mouseenter', stopAutoplay);
+  slider.addEventListener('mouseleave', startAutoplay);
+
+  /* Pausa se a aba / janela estiver oculta */
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopAutoplay();
+    } else {
+      startAutoplay();
+    }
+  });
+
+  /* Suporte a teclado (setas esquerda/direita quando o foco está no slider) */
+  slider.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft')  { prevSlide(); stopAutoplay(); startAutoplay(); }
+    if (e.key === 'ArrowRight') { nextSlide(); stopAutoplay(); startAutoplay(); }
+  });
+
+  /* Inicia o autoplay */
+  startAutoplay();
+}
+
 
 /* --------------------------------------------------------------------------
    1. Cabeçalho Fixo com Detecção de Scroll

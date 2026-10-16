@@ -27,7 +27,11 @@
   <link rel="icon" type="image/png" href="assets/img/logo-symbol.png">
   <link rel="apple-touch-icon" href="assets/img/logo-symbol.png">
 
-  <!-- Google Fonts: Montserrat (800 Títulos, 600 Subtítulos/Menus), Open Sans (400 Textos), Caveat (Manuscrita Complementar) -->
+  <!-- Preload: Recursos críticos para LCP e performance -->
+  <link rel="preload" href="assets/img/logo-acolhe-full.png" as="image">
+  <link rel="preload" href="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=900&q=85" as="image">
+
+  <!-- Google Fonts: Montserrat + Open Sans + Caveat | display=swap evita FOUT -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -48,7 +52,13 @@
       
       <!-- Logotipo Oficial ACOLHE+ à esquerda -->
       <a href="#inicio" class="brand-logo-link" aria-label="ACOLHE+ - Página Inicial">
-        <img src="assets/img/logo-acolhe-full.png" alt="Logotipo Oficial ACOLHE+ — Capacitação e inclusão de pessoas em situação de rua" class="brand-logo-img">
+        <img
+          src="assets/img/logo-acolhe-full.png"
+          alt="Logotipo Oficial ACOLHE+ — Capacitação e inclusão de pessoas em situação de rua"
+          class="brand-logo-img"
+          width="220" height="58"
+          fetchpriority="high"
+        >
       </a>
 
       <!-- Menu Desktop Principal -->
@@ -89,7 +99,7 @@
     <div class="mobile-drawer-inner">
       <div class="mobile-drawer-header">
         <a href="#inicio" class="brand-logo-link mobile-logo">
-          <img src="assets/img/logo-acolhe-full.png" alt="ACOLHE+">
+          <img src="assets/img/logo-acolhe-full.png" alt="ACOLHE+" width="160" height="42" loading="lazy">
         </a>
         <button class="mobile-drawer-close" aria-label="Fechar Menu Mobile">&times;</button>
       </div>
@@ -194,11 +204,104 @@
 
         </div>
 
-        <!-- Coluna Visual / Fotografia Humanizada Ampla -->
+        <!-- Coluna Visual / Carrossel de Imagens Hero -->
         <div class="hero-visual">
           <div class="hero-image-wrapper">
-            <img src="assets/img/hero-banner.png" alt="Grupo de pessoas unidas contemplando a cidade ao amanhecer, representando esperança, capacitação e novos caminhos para a ACOLHE+" class="hero-img">
-            
+
+            <!-- CARROSSEL DE IMAGENS -->
+            <div class="hero-slider" id="heroSlider" role="region" aria-label="Galeria de imagens ACOLHE+" aria-live="polite">
+
+              <!-- Slide 1: Capacitação profissional -->
+              <div class="hero-slide active" aria-hidden="false">
+                <img
+                  src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=900&q=85"
+                  alt="Participantes em curso de gastronomia e capacitação profissional da ACOLHE+"
+                  class="hero-slide-img"
+                  loading="eager"
+                >
+                <div class="hero-slide-caption">
+                  <span class="slide-caption-icon">🍳</span>
+                  <div>
+                    <strong>Capacitação Profissional</strong>
+                    <span>Formação técnica que abre portas</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 2: Inclusão e trabalho -->
+              <div class="hero-slide" aria-hidden="true">
+                <img
+                  src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=85"
+                  alt="Profissionais em ambiente de trabalho cooperativo e inclusivo"
+                  class="hero-slide-img"
+                  loading="lazy"
+                >
+                <div class="hero-slide-caption">
+                  <span class="slide-caption-icon">💼</span>
+                  <div>
+                    <strong>Inclusão no Mercado</strong>
+                    <span>Oportunidades reais para novos começos</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 3: Acolhimento comunitário -->
+              <div class="hero-slide" aria-hidden="true">
+                <img
+                  src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=85"
+                  alt="Equipe de voluntários em ação de acolhimento e suporte comunitário"
+                  class="hero-slide-img"
+                  loading="lazy"
+                >
+                <div class="hero-slide-caption">
+                  <span class="slide-caption-icon">🤝</span>
+                  <div>
+                    <strong>Acolhimento Humanizado</strong>
+                    <span>Respeito, empatia e dignidade em cada passo</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 4: Inclusão digital -->
+              <div class="hero-slide" aria-hidden="true">
+                <img
+                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=85"
+                  alt="Oficina de inclusão digital e letramento tecnológico"
+                  class="hero-slide-img"
+                  loading="lazy"
+                >
+                <div class="hero-slide-caption">
+                  <span class="slide-caption-icon">💻</span>
+                  <div>
+                    <strong>Inclusão Digital</strong>
+                    <span>Tecnologia como ferramenta de autonomia</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Botões de Navegação Prev/Next -->
+              <button class="slider-btn slider-btn-prev" id="sliderPrev" aria-label="Imagem anterior do carrossel" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+              <button class="slider-btn slider-btn-next" id="sliderNext" aria-label="Próxima imagem do carrossel" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+
+            </div>
+            <!-- /CARROSSEL -->
+
+            <!-- Dots de Navegação -->
+            <div class="slider-dots" role="tablist" aria-label="Navegação do carrossel de imagens">
+              <button class="slider-dot active" data-slide="0" role="tab" aria-selected="true" aria-label="Ir para imagem 1: Capacitação Profissional" type="button"></button>
+              <button class="slider-dot" data-slide="1" role="tab" aria-selected="false" aria-label="Ir para imagem 2: Inclusão no Mercado" type="button"></button>
+              <button class="slider-dot" data-slide="2" role="tab" aria-selected="false" aria-label="Ir para imagem 3: Acolhimento Humanizado" type="button"></button>
+              <button class="slider-dot" data-slide="3" role="tab" aria-selected="false" aria-label="Ir para imagem 4: Inclusão Digital" type="button"></button>
+            </div>
+
             <!-- Card Flutuante de Retenção e Dignidade -->
             <div class="hero-floating-badge" role="region" aria-label="Destaque de Impacto">
               <div class="badge-icon-wrap">
@@ -238,7 +341,14 @@
           
           <div class="about-image-col">
             <div class="about-photo-card">
-              <img src="assets/img/cartaz-acolhe.png" alt="Cartaz institucional da ACOLHE+ ilustrando mãos que sustentam a comunidade e a cidade com esperança e dignidade" class="about-img">
+              <img
+                src="assets/img/cartaz-acolhe.jpg"
+                alt="Cartaz institucional da ACOLHE+ ilustrando pessoas em situação de rua encontrando novas oportunidades com dignidade"
+                class="about-img"
+                width="560" height="720"
+                loading="lazy"
+                decoding="async"
+              >
               <div class="about-photo-tag">
                 <span class="tag-icon">✦</span>
                 <span>Dignidade & Transformação Social</span>
